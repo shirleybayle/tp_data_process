@@ -31,6 +31,44 @@ class ClimateServiceTest extends AnyFunSuite {
 
   //@TODO
   test("filterDecemberData") {
-    assert(true == false)
+    val records = List(
+      Some(CO2Record(2021, 11, 400.5)),
+      Some(CO2Record(2021, 12, 410.2)),
+      Some(CO2Record(2022, 1, 415.7)),
+      Some(CO2Record(2022, 12, 420.3)),
+      Some(CO2Record(2023, 2, 425.9))
+    )
+
+    val result = ClimateService.filterDecemberData(records)
+
+    assert(result.forall(record => record.month != 12))
+  }
+
+  test("getMinMax") {
+    val records = List(
+      CO2Record(2021, 1, 400.5),
+      CO2Record(2021, 2, 410.2),
+      CO2Record(2021, 12, 415.7),
+      CO2Record(2022, 1, 420.3),
+      CO2Record(2022, 12, 425.9)
+    )
+
+    val (min, max) = ClimateService.getMinMax(records)
+    assert(min == 400.5)
+    assert(max == 425.9)
+  }
+
+  test("getMinMaxByYear") {
+    val records = List(
+      CO2Record(2021, 1, 400.5),
+      CO2Record(2021, 2, 410.2),
+      CO2Record(2021, 12, 415.7),
+      CO2Record(2022, 1, 420.3),
+      CO2Record(2022, 12, 425.9)
+    )
+
+    val (min, max) = ClimateService.getMinMaxByYear(records, 2021)
+    assert(min == 400.5)
+    assert(max == 415.7)
   }
 }
